@@ -1,8 +1,11 @@
 @import "tailwindcss";
+@import '@fontsource-variable/inter/opsz-italic.css';
+
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-light-100: #fbf1c7;
   --color-dark-100: #222;
+  --font-inter: 'Inter Variable', sans-serif;
 }
