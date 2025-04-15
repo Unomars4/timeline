@@ -1,5 +1,9 @@
 function App() {
-  return <main className="bg-light-100 dark:bg-dark-100"></main>;
+  return (
+    <main className="font-inter w-5xl min-h-screen mx-auto border-y-black border-2">
+      <h1>Timeline</h1>
+    </main>
+  );
 }
 
 export default App;
