@@ -1,45 +1,73 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getApiData } from "./lib/api";
-import { Timeline } from "./types";
+import { Timeline, TimelineObj } from "./types";
 
 function App() {
   const [timeline, setTimeline] = useState<Timeline | null>(null);
+  const [selectedItem, setSelectedItem] = useState<TimelineObj | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     async function fetchTimelineData() {
       const data = await getApiData();
       setTimeline(data);
+      if (!selectedItem && timeline) {
+        setSelectedItem(timeline[0]);
+      }
     }
 
     fetchTimelineData();
   }, [timeline]);
 
-  if (!timeline) return <p>Loading...</p>;
+  if (!timeline || !selectedItem) return <p>Loading...</p>;
 
   return (
-    <main className="overflow-x-hidden font-inter w-5xl min-h-screen mx-auto">
-      <div className="flex gap-x-2">
-        <img
-          src={`https://arthurfrost.qflo.co.za/${timeline[0].Icon}`}
-          className="w-[300px] h-[300px] rounded-md"
-        />
+    <main className="font-inter relative -z-0 min-h-screen min-w-screen flex justify-center">
+      <div className="w-4/5 h-[600px] m-auto flex flex-col justify-between">
         <div>
-          <p>Title: {timeline[0].Title}</p>
-          <p>Episode: {timeline[0].Episode}</p>
-          <p>Description: {timeline[0].Description}</p>
-          <p>Upload Date: {timeline[0].CreateDate}</p>
-          <audio controls>
+          <h1 className="text-8xl">Timeline</h1>
+          <audio
+            controls
+            controlsList="nodownload noplaybackspeed"
+            ref={audioRef}
+          >
             <source
-              src={`https://arthurfrost.qflo.co.za/${timeline[0].Audio}`}
+              src={`https://arthurfrost.qflo.co.za/${selectedItem.Audio}`}
             />
           </audio>
+          <div className="flex gap-x-3 mt-5">
+            <img
+              className="w-[50px] h-[50px] object-fill rounded-lg border-solid border-gray-700"
+              src={`https://arthurfrost.qflo.co.za/${selectedItem.Icon}`}
+              alt="Episode Cover"
+            />
+            <div>
+              <p>{selectedItem.Title}</p>
+              <p className="text-sm">Ep: {selectedItem.Episode}</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="clickable-thumbnails my-4 flex">
-        <img
-          className="object-cover rounded-full border-black border border-solid w-[50px] h-[50px]"
-          src={`https://arthurfrost.qflo.co.za/${timeline[0].Icon}`}
-        />
+
+        <div className="flex justify-between">
+          <div className="w-full flex gap-x-2 overflow-x-scroll">
+            {timeline.map((item) => {
+              return (
+                <img
+                  key={item.Id}
+                  className="w-[40px] h-[40px] object-fill rounded-lg border-solid border-gray-700"
+                  src={`https://arthurfrost.qflo.co.za/${item.Icon}`}
+                  alt="Episode Cover"
+                  onClick={() => {
+                    setSelectedItem(item);
+                    if (audioRef.current) {
+                      audioRef.current.src = `https://arthurfrost.qflo.co.za/${item.Audio}`;
+                    }
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
       </div>
     </main>
   );
