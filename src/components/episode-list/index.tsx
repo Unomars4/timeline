@@ -19,6 +19,7 @@ function EpisodeList({
       {data.map((item) => {
         return (
           <EpisodeCard
+            key={item.Id}
             item={item}
             audioRef={audioRef}
             selectedItemHandler={selectedItemHandler}
