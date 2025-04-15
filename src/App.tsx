@@ -43,6 +43,7 @@ function App() {
             data={timeline}
             audioRef={audioRef}
             selectedItemHandler={setSelectedItem}
+            selectedId={selectedItem.Id}
           />
         </div>
       </CenteredLayout>

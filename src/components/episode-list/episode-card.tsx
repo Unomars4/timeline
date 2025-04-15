@@ -12,12 +12,14 @@ type EpisodeCardProps = {
   item: TimelineObj;
   audioRef: RefObject<HTMLAudioElement | null>;
   selectedItemHandler: (obj: TimelineObj) => void;
+  selectedId: number;
 };
 
 function EpisodeCard({
   item,
   selectedItemHandler,
   audioRef,
+  selectedId,
 }: EpisodeCardProps) {
   return (
     <TooltipProvider delayDuration={50} skipDelayDuration={50}>
@@ -33,7 +35,7 @@ function EpisodeCard({
         >
           <img
             key={item.Id}
-            className="cursor-pointer aspect-square w-[40px] h-[40px] object-fill rounded-lg border-solid border-gray-700"
+            className={`cursor-pointer aspect-square w-[40px] h-[40px] object-fill rounded-lg border-solid ${item.Id === selectedId ? "border-red-900 border-[5px]" : ""}`}
             src={`https://arthurfrost.qflo.co.za/${item.Image}`}
             alt="Episode Cover"
           />

@@ -6,12 +6,14 @@ type EpisodeListProps = {
   data: Timeline;
   audioRef: RefObject<HTMLAudioElement | null>;
   selectedItemHandler: (obj: TimelineObj) => void;
+  selectedId: number;
 };
 
 function EpisodeList({
   data,
   audioRef,
   selectedItemHandler,
+  selectedId,
 }: EpisodeListProps) {
   if (!audioRef || !data) return null;
   return (
@@ -23,6 +25,7 @@ function EpisodeList({
             item={item}
             audioRef={audioRef}
             selectedItemHandler={selectedItemHandler}
+            selectedId={selectedId}
           />
         );
       })}
